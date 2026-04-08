@@ -11,7 +11,7 @@
   --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.3);
   --cream:#F2E8D9;--dark:#0D0A08;--blue-light:#5b8db8;
 }
-html{scroll-behavior:smooth}
+html,body{height:100%;scroll-behavior:auto}
 body{background:var(--dark);color:var(--cream);font-family:Georgia,'Palatino Linotype',serif;overflow-x:hidden}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;background:linear-gradient(to bottom,rgba(13,10,8,0.9),transparent);}
@@ -23,11 +23,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .page{display:none;min-height:100vh}
 .page.active{display:block}
 
-/* HOME */
 #page-home{position:relative;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background-color:#1a0a06;background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/itmfl.jpg');background-size:cover;background-position:center;}
 .hero-bg::before{content:'';position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at 62% 38%,rgba(139,26,26,.3) 0%,transparent 55%),linear-gradient(to bottom,rgba(13,10,8,.4),rgba(13,10,8,.65));}
-.hero-bg::after{content:'';position:absolute;inset:0;z-index:2;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");background-size:150px;opacity:.3;mix-blend-mode:overlay;pointer-events:none;}
 .stripe{position:absolute;right:23%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--red) 15%,var(--red) 85%,transparent);opacity:.5;z-index:3}
 .hero-content{position:relative;z-index:4;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.8rem}
 .eyebrow{font-size:.65rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);opacity:.8}
@@ -43,7 +41,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .scroll-line{width:1px;height:36px;background:var(--gold)}
 @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.7}}
 
-/* CATEGORY PAGE */
 .cat-hero{position:relative;height:45vh;min-height:260px;display:flex;align-items:flex-end;padding:3rem;overflow:hidden;}
 .cat-hero-bg{position:absolute;inset:0;}
 .cat-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,10,8,1) 0%,rgba(13,10,8,.3) 60%,transparent 100%)}
@@ -83,7 +80,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .film-card:hover .card-hover{opacity:1}
 .card-hover span{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold)}
 
-/* MODAL */
 .modal-backdrop{position:fixed;inset:0;z-index:500;background:rgba(8,6,4,.9);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;}
 .modal-backdrop.open{opacity:1;pointer-events:all}
 .modal{position:relative;width:min(780px,92vw);max-height:88vh;overflow-y:auto;background:#0f0c09;border:1px solid var(--gold-dim);transform:translateY(20px);transition:transform .35s;}
@@ -117,15 +113,14 @@ footer p{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;opacity:.3
 <body>
 
 <nav>
-  <div class="nav-logo" onclick="goHome()">Film Archive</div>
+  <div class="nav-logo" onclick="goPage('home')">Film Archive</div>
   <ul class="nav-links">
-    <li><a onclick="goPage('colour')" style="cursor:pointer">Colour</a></li>
-    <li><a onclick="goPage('light')" style="cursor:pointer">Light & Shadow</a></li>
-    <li><a onclick="goPage('composition')" style="cursor:pointer">Composition</a></li>
+    <li><a onclick="goPage('colour')">Colour</a></li>
+    <li><a onclick="goPage('light')">Light & Shadow</a></li>
+    <li><a onclick="goPage('composition')">Composition</a></li>
   </ul>
 </nav>
 
-<!-- HOME -->
 <div id="page-home" class="page active">
   <div class="hero-bg"></div>
   <div class="stripe"></div>
@@ -143,7 +138,6 @@ footer p{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;opacity:.3
   <div class="scroll-hint"><span>Enter</span><div class="scroll-line"></div></div>
 </div>
 
-<!-- COLOUR PAGE -->
 <div id="page-colour" class="page">
   <div class="cat-hero">
     <div class="cat-hero-bg" style="background:radial-gradient(ellipse at 60% 40%,rgba(139,26,26,.7) 0%,transparent 55%),linear-gradient(135deg,#1a0505,#0D0A08)"></div>
@@ -158,79 +152,56 @@ footer p{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;opacity:.3
     <button class="subcat-tab" onclick="switchSub('blue')">Blue</button>
     <button class="subcat-tab" onclick="switchSub('saturation')">Artificial Saturation</button>
   </div>
-
-  <!-- RED -->
   <section class="film-section active" id="sub-red">
     <div class="subcat-label"><span class="tag red">Red</span><span class="subcat-desc-text">Violence · Desire · Excess</span></div>
     <div class="film-grid">
       <article class="film-card red" onclick="openModal('The Shining','1980 · Stanley Kubrick','Violence','https://raw.githubusercontent.com/SergioChang415/film-mame/main/shining.jpg','red','Red',`Kubrick floods the Overlook Hotel in crimson — the elevator blood, the bathroom wallpaper — transforming a domestic space into a chamber of pure dread. Red here is not passion but possession.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/shining.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">The Shining</p><p class="card-keyword">Violence</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">The Shining</p><p class="card-keyword">Violence</p></div><div class="card-hover"><span>View</span></div>
       </article>
-      <article class="film-card red" onclick="openModal('Suspiria','1977 · Dario Argento','Excess','https://raw.githubusercontent.com/SergioChang415/film-mame/main/suspiria.jpg','red','Red',`Argento's palette is impossible, operatic. The reds in Suspiria don't exist in nature — they are the colour of nightmare, of a world where evil has already won and is simply showing off.`)">
-        <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/suspiria.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Suspiria</p><p class="card-keyword">Excess</p></div>
-        <div class="card-hover"><span>View</span></div>
+      <article class="film-card red" onclick="openModal('Suspiria','1977 · Dario Argento','Excess','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Suspiria.png','red','Red',`Argento's palette is impossible, operatic. The reds in Suspiria don't exist in nature — they are the colour of nightmare, of a world where evil has already won and is simply showing off.`)">
+        <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/Suspiria.png')"></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Suspiria</p><p class="card-keyword">Excess</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card red" onclick="openModal('倩女幽魂','1987 · 程小東','Desire','https://raw.githubusercontent.com/SergioChang415/film-mame/main/ghost.jpg','red','Red',`In the moonlit forest, red lanterns and crimson robes frame a love that cannot exist in the mortal world. Desire in this film is always already suffused with the knowledge of its own impossibility.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/ghost.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">倩女幽魂</p><p class="card-keyword">Desire</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">倩女幽魂</p><p class="card-keyword">Desire</p></div><div class="card-hover"><span>View</span></div>
       </article>
     </div>
   </section>
-
-  <!-- BLUE -->
   <section class="film-section" id="sub-blue">
     <div class="subcat-label"><span class="tag blue">Blue</span><span class="subcat-desc-text">Isolation · Emotional Distance</span></div>
     <div class="film-grid">
       <article class="film-card blue" onclick="openModal('Three Colors: Blue','1993 · Krzysztof Kieślowski','Isolation','https://raw.githubusercontent.com/SergioChang415/film-mame/main/three color blue.webp','blue','Blue',`Kieślowski wraps Julie in blue — the swimming pool, the apartment walls, the sugar cube absorbing spilled coffee. Blue is freedom's cold other face: liberty that feels like numbness.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/three color blue.webp')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Three Colors: Blue</p><p class="card-keyword">Isolation</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Three Colors: Blue</p><p class="card-keyword">Isolation</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card blue" onclick="openModal('Moonlight','2016 · Barry Jenkins','Distance','https://raw.githubusercontent.com/SergioChang415/film-mame/main/moonlight.jpg','blue','Blue',`Moonlight photographs Black skin under blue light in a way rarely seen on screen. The colour holds both beauty and melancholy — a tenderness the world outside refuses to grant Chiron.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/moonlight.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Moonlight</p><p class="card-keyword">Distance</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Moonlight</p><p class="card-keyword">Distance</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card blue" onclick="openModal('Drive','2011 · Nicolas Winding Refn','Emotional Distance','https://raw.githubusercontent.com/SergioChang415/film-mame/main/diver.jpeg','blue','Blue',`Los Angeles at night rendered in electric blue and neon pink. The Driver's emotional flatness is literalized in Refn's palette — a city too bright to feel anything in.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/diver.jpeg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Drive</p><p class="card-keyword">Emotional Distance</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Drive</p><p class="card-keyword">Emotional Distance</p></div><div class="card-hover"><span>View</span></div>
       </article>
     </div>
   </section>
-
-  <!-- SATURATION -->
   <section class="film-section" id="sub-saturation">
     <div class="subcat-label"><span class="tag gold">Artificial Saturation</span><span class="subcat-desc-text">Designed Emotional Worlds</span></div>
     <div class="film-grid">
       <article class="film-card gold" onclick="openModal('The Grand Budapest Hotel','2014 · Wes Anderson','Designed World','https://raw.githubusercontent.com/SergioChang415/film-mame/main/The Grand Budapest Hotel.jpg','gold','Artificial Saturation',`Anderson constructs a Europe that never existed — pastel pinks, symmetrical compositions, miniature precision. The artifice is the point: nostalgia for a world as we wish it had been.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/The Grand Budapest Hotel.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">The Grand Budapest Hotel</p><p class="card-keyword">Designed World</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">The Grand Budapest Hotel</p><p class="card-keyword">Designed World</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card gold" onclick="openModal('Amélie','2001 · Jean-Pierre Jeunet','Emotional World','https://raw.githubusercontent.com/SergioChang415/film-mame/main/amelie.png','gold','Artificial Saturation',`Jeunet saturates Montmartre in impossible greens and ambers. The colour scheme is Amélie's own interiority made visible — the world seen through the eyes of someone who has decided to find it magical.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/amelie.png')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Amélie</p><p class="card-keyword">Emotional World</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Amélie</p><p class="card-keyword">Emotional World</p></div><div class="card-hover"><span>View</span></div>
       </article>
     </div>
   </section>
   <footer><p>Film Archive</p><p>Visual Language Study</p></footer>
 </div>
 
-<!-- LIGHT & SHADOW PAGE -->
 <div id="page-light" class="page">
   <div class="cat-hero">
     <div class="cat-hero-bg" style="background:radial-gradient(ellipse at 40% 50%,rgba(80,80,80,.4) 0%,transparent 55%),linear-gradient(135deg,#080808,#0D0A08)"></div>
@@ -248,28 +219,21 @@ footer p{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;opacity:.3
     <div class="film-grid">
       <article class="film-card mono" onclick="openModal('Metropolis','1927 · Fritz Lang','Psychological Space','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Metropolis.png','mono','Black & White',`Lang's expressionist shadows carve the city into geometry of power. Light is a weapon of the ruling class; the workers exist in darkness not metaphorically but literally. Shadow as architecture of oppression.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/Metropolis.png')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Metropolis</p><p class="card-keyword">Psychological Space</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Metropolis</p><p class="card-keyword">Psychological Space</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card mono" onclick="openModal('Double Indemnity','1944 · Billy Wilder','Shadow','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Double Indemnity.png','mono','Black & White',`Venetian blind shadows stripe Walter Neff's face — he is already a man behind bars before the law catches him. Noir cinematography encodes guilt in the very texture of light.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/Double Indemnity.png')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Double Indemnity</p><p class="card-keyword">Shadow</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Double Indemnity</p><p class="card-keyword">Shadow</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card mono" onclick="openModal('The Lighthouse','2019 · Robert Eggers','Isolation','https://raw.githubusercontent.com/SergioChang415/film-mame/main/The_Lighthouse.jpeg','mono','Black & White',`Shot in 1.19:1 on orthochromatic-style film, Eggers imprisons his characters in a frame almost square — the aspect ratio itself a cage. The black and white strips the world to its mythic bones.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/The_Lighthouse.jpeg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">The Lighthouse</p><p class="card-keyword">Isolation</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">The Lighthouse</p><p class="card-keyword">Isolation</p></div><div class="card-hover"><span>View</span></div>
       </article>
     </div>
   </section>
   <footer><p>Film Archive</p><p>Visual Language Study</p></footer>
 </div>
 
-<!-- COMPOSITION PAGE -->
 <div id="page-composition" class="page">
   <div class="cat-hero">
     <div class="cat-hero-bg" style="background:radial-gradient(ellipse at 50% 50%,rgba(30,60,40,.5) 0%,transparent 55%),linear-gradient(135deg,#050d08,#0D0A08)"></div>
@@ -287,35 +251,25 @@ footer p{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;opacity:.3
     <div class="film-grid">
       <article class="film-card green" onclick="openModal('Parasite','2019 · Bong Joon-ho','Hierarchy','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Parasite.jpg','green','Composition',`Bong maps class onto the Z-axis: the Parks live high, the Kims descend. Every frame encodes the film's thesis — wealth is altitude. The staircase is not a staircase, it is a social order made architectural.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/Parasite.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Parasite</p><p class="card-keyword">Hierarchy</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Parasite</p><p class="card-keyword">Hierarchy</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card green" onclick="openModal('Her','2013 · Spike Jonze','Isolation in Space','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Her.jpg','green','Composition',`Theodore is always slightly off-center, always with space around him the film refuses to fill. Jonze uses negative space not as emptiness but as the shape of loneliness — the invisible Samantha who occupies it.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/Her.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">Her</p><p class="card-keyword">Isolation in Space</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">Her</p><p class="card-keyword">Isolation in Space</p></div><div class="card-hover"><span>View</span></div>
       </article>
       <article class="film-card green" onclick="openModal('花样年华','2000 · 王家衛','Longing · Restraint','https://raw.githubusercontent.com/SergioChang415/film-mame/main/itmfl.jpg','green','Composition',`Wong frames his lovers through doorways, around corners, in mirrors — always mediated, never direct. The slow-motion corridor sequences stretch time into pure yearning. What is withheld becomes more present than what is shown.`)">
         <div class="card-poster" style="background-image:url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/itmfl.jpg')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info"><p class="card-title">花样年华</p><p class="card-keyword">Longing · Restraint</p></div>
-        <div class="card-hover"><span>View</span></div>
+        <div class="card-overlay"></div><div class="card-info"><p class="card-title">花样年华</p><p class="card-keyword">Longing · Restraint</p></div><div class="card-hover"><span>View</span></div>
       </article>
     </div>
   </section>
   <footer><p>Film Archive</p><p>Visual Language Study</p></footer>
 </div>
 
-<!-- MODAL -->
 <div class="modal-backdrop" id="modal" onclick="closeModal(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModalDirect()">✕</button>
-    <div class="modal-poster">
-      <div class="modal-poster-bg" id="modal-poster-bg"></div>
-      <div class="modal-poster-overlay"></div>
-    </div>
+    <div class="modal-poster"><div class="modal-poster-bg" id="modal-poster-bg"></div><div class="modal-poster-overlay"></div></div>
     <div class="modal-body">
       <div class="modal-tag-row" id="modal-tags"></div>
       <h3 class="modal-title" id="modal-title"></h3>
@@ -327,25 +281,27 @@ footer p{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;opacity:.3
 </div>
 
 <script>
-function goHome(){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-home').classList.add('active');
-  window.scrollTo(0,0);
-}
 function goPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  setTimeout(()=>window.scrollTo({top:0,behavior:'instant'}),10);
+  // 强制滚动到顶部
+  window.scrollTo(0,0);
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
+  // 用setTimeout确保页面切换后再滚动
+  setTimeout(function(){
+    window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+  },50);
 }
+
 function switchSub(id){
-  document.querySelectorAll('.subcat-tab').forEach(t=>{
-    const map={red:'Red',blue:'Blue',saturation:'Artificial Saturation',bw:'Black & White',comp:'Composition'};
-    t.classList.toggle('active',t.textContent===map[id]);
-  });
-  document.querySelectorAll('.film-section').forEach(s=>{
-    s.classList.toggle('active',s.id==='sub-'+id);
-  });
+  const map={red:'Red',blue:'Blue',saturation:'Artificial Saturation',bw:'Black & White',comp:'Composition'};
+  document.querySelectorAll('.subcat-tab').forEach(t=>t.classList.toggle('active',t.textContent===map[id]));
+  document.querySelectorAll('.film-section').forEach(s=>s.classList.toggle('active',s.id==='sub-'+id));
 }
+
 function openModal(title,year,keyword,img,tagClass,tagLabel,analysis){
   document.getElementById('modal-title').textContent=title;
   document.getElementById('modal-year').textContent=year;
