@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Film Archive</title>
+
   <style>
+
+    /* reset some basic stuff */
     * {
       margin: 0;
       padding: 0;
@@ -12,754 +15,268 @@
     }
 
     body {
-      background: #0d0a08;
-      color: #f2e8d9;
-      font-family: Georgia, "Times New Roman", serif;
-      overflow-x: hidden;
+      background-color: #0D0A08;
+      color: #F2E8D9;
+      font-family: Georgia, serif;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
-    }
-
-    nav {
+    /* ---- navigation bar at the top ---- */
+    .navbar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
+      right: 0;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
-      background: rgba(13, 10, 8, 0.9);
-      z-index: 100;
+      padding: 20px 50px;
+      background: linear-gradient(to bottom, rgba(13,10,8,0.9), transparent);
     }
 
-    .logo {
-      font-size: 12px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #c9a84c;
-      cursor: pointer;
-    }
-
-    .nav-list {
-      list-style: none;
-      display: flex;
-      gap: 28px;
-    }
-
-    .nav-list li {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      opacity: 0.75;
-    }
-
-    .nav-list li:hover {
-      opacity: 1;
-    }
-
-    .page {
-      display: none;
-      min-height: 100vh;
-      padding-top: 72px;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    .home {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
-      background-image: linear-gradient(rgba(13, 10, 8, 0.45), rgba(13, 10, 8, 0.75)), url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/itmfl.jpg');
-      background-size: cover;
-      background-position: center;
-      padding: 40px 20px;
-    }
-
-    .home-content {
-      max-width: 900px;
-    }
-
-    .home-small {
+    .navbar .logo {
       font-size: 11px;
       letter-spacing: 5px;
       text-transform: uppercase;
-      color: #c9a84c;
-      margin-bottom: 18px;
+      color: #C9A84C;
+      text-decoration: none;
     }
 
-    .home h1 {
-      font-size: 84px;
-      font-style: italic;
-      font-weight: normal;
-      margin-bottom: 10px;
-    }
-
-    .home-cn {
-      font-size: 15px;
-      letter-spacing: 2px;
-      color: #c9a84c;
-      margin-bottom: 12px;
-    }
-
-    .home-text {
-      font-size: 12px;
-      letter-spacing: 2px;
-      opacity: 0.75;
-      margin-bottom: 40px;
-      text-transform: uppercase;
-    }
-
-    .home-buttons {
+    .navbar ul {
+      list-style: none;
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
+      gap: 30px;
     }
 
-    .home-buttons button {
-      border: 1px solid rgba(201, 168, 76, 0.35);
-      background: rgba(255, 255, 255, 0.02);
-      color: #f2e8d9;
-      padding: 14px 24px;
-      font-size: 12px;
-      letter-spacing: 2px;
+    .navbar ul li a {
+      font-size: 10px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      cursor: pointer;
-    }
-
-    .home-buttons button:hover {
-      background: rgba(201, 168, 76, 0.08);
-    }
-
-    .section-hero {
-      padding: 70px 40px 30px 40px;
-    }
-
-    .section-number {
-      font-size: 12px;
-      letter-spacing: 4px;
-      color: #c9a84c;
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-size: 48px;
-      font-style: italic;
-      font-weight: normal;
-      line-height: 1.1;
-      margin-bottom: 10px;
-    }
-
-    .section-desc {
-      font-size: 14px;
-      opacity: 0.68;
-      max-width: 680px;
-      line-height: 1.7;
-    }
-
-    .tab-bar {
-      padding: 0 40px;
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .tab-bar button {
-      background: transparent;
-      border: none;
-      color: #f2e8d9;
-      opacity: 0.55;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 14px 10px;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-    }
-
-    .tab-bar button.active {
-      opacity: 1;
-      border-bottom-color: #c9a84c;
-    }
-
-    .content-block {
-      display: none;
-      padding: 30px 40px 50px 40px;
-    }
-
-    .content-block.active {
-      display: block;
-    }
-
-    .content-head {
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    .label {
-      border: 1px solid currentColor;
-      padding: 5px 10px;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .label.red { color: #c0392b; }
-    .label.blue { color: #5b8db8; }
-    .label.gold { color: #c9a84c; }
-    .label.mono { color: #a0a0a0; }
-    .label.green { color: #7a9e7e; }
-
-    .content-note {
-      font-size: 13px;
+      color: #F2E8D9;
+      text-decoration: none;
       opacity: 0.6;
-      font-style: italic;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 18px;
+    .navbar ul li a:hover {
+      opacity: 1;
     }
 
-    .card {
+    /* ---- hero / homepage section ---- */
+    .hero-section {
       position: relative;
-      aspect-ratio: 2 / 3;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
-      cursor: pointer;
-      background: #151515;
     }
 
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 55%;
-      background: linear-gradient(to top, rgba(13, 10, 8, 0.96), rgba(13, 10, 8, 0.15), transparent);
-    }
-
-    .card-top-line {
+    /* background image */
+    .hero-bg {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 3px;
+      right: 0;
+      bottom: 0;
+      background-image: url('https://raw.githubusercontent.com/SergioChang415/film-mame/main/itmfl.jpg');
+      background-size: cover;
+      background-position: center;
+      background-color: #1a0a06;
+    }
+
+    /* dark overlay on top of background */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to bottom, rgba(13,10,8,0.4), rgba(13,10,8,0.65));
+      z-index: 1;
+    }
+
+    /* red vertical line on the right side */
+    .red-line {
+      position: absolute;
+      right: 23%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, #8B1A1A 15%, #8B1A1A 85%, transparent);
+      opacity: 0.5;
       z-index: 2;
     }
 
-    .card-top-line.red { background: #c0392b; }
-    .card-top-line.blue { background: #5b8db8; }
-    .card-top-line.gold { background: #c9a84c; }
-    .card-top-line.mono { background: #9a9a9a; }
-    .card-top-line.green { background: #7a9e7e; }
-
-    .card-info {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      padding: 16px;
-      z-index: 3;
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-style: italic;
-      margin-bottom: 6px;
-    }
-
-    .card-key {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      opacity: 0.6;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      transition: 0.25s;
-    }
-
-    footer {
-      padding: 25px 40px 35px 40px;
-      border-top: 1px solid rgba(201, 168, 76, 0.2);
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    footer p {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      opacity: 0.4;
-    }
-
-    .modal-bg {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.82);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 300;
-    }
-
-    .modal-bg.show {
-      display: flex;
-    }
-
-    .modal-box {
-      width: 100%;
-      max-width: 760px;
-      max-height: 90vh;
-      overflow-y: auto;
-      background: #120f0c;
-      border: 1px solid rgba(201, 168, 76, 0.2);
+    /* text content in the middle */
+    .hero-text {
       position: relative;
+      z-index: 3;
+      text-align: center;
     }
 
-    .modal-box img {
-      width: 100%;
-      height: 320px;
-      object-fit: cover;
-      display: block;
+    .hero-text .small-label {
+      font-size: 10px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #C9A84C;
+      opacity: 0.8;
+      margin-bottom: 15px;
     }
 
-    .modal-content {
-      padding: 24px 28px 30px 28px;
-    }
-
-    .modal-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .modal-title {
-      font-size: 34px;
+    .hero-text h1 {
+      font-size: 90px;
+      font-weight: 400;
       font-style: italic;
-      font-weight: normal;
+      color: #F2E8D9;
+      line-height: 1;
+      text-shadow: 0 0 80px rgba(139,26,26,0.4);
+      margin-bottom: 15px;
+    }
+
+    .hero-text .chinese-title {
+      font-size: 16px;
+      letter-spacing: 4px;
+      color: #C9A84C;
       margin-bottom: 8px;
     }
 
-    .modal-meta {
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: #c9a84c;
-      margin-bottom: 18px;
+    .hero-text .categories-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #F2E8D9;
+      opacity: 0.35;
+      margin-bottom: 50px;
+    }
+
+    /* the three category buttons */
+    .category-buttons {
+      display: flex;
+      border: 1px solid rgba(201,168,76,0.3);
+      position: relative;
+      z-index: 3;
+      margin-top: 20px;
+    }
+
+    .category-buttons button {
+      padding: 15px 45px;
+      font-family: Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #F2E8D9;
+      opacity: 0.6;
+      background: transparent;
+      border: none;
+      border-right: 1px solid rgba(201,168,76,0.3);
+      cursor: pointer;
+    }
+
+    .category-buttons button:last-child {
+      border-right: none;
+    }
+
+    .category-buttons button:hover {
+      opacity: 1;
+      background: rgba(201,168,76,0.07);
+    }
+
+    /* scroll hint at the bottom */
+    .scroll-hint {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.35;
+      animation: fadeUpDown 2.5s ease-in-out infinite;
+    }
+
+    .scroll-hint span {
+      font-size: 9px;
+      letter-spacing: 4px;
       text-transform: uppercase;
     }
 
-    .modal-text {
-      font-size: 15px;
-      line-height: 1.9;
-      opacity: 0.82;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 36px;
+    .scroll-hint .line {
+      width: 1px;
       height: 36px;
-      border: 1px solid rgba(201, 168, 76, 0.25);
-      background: rgba(13, 10, 8, 0.8);
-      color: #f2e8d9;
-      cursor: pointer;
-      font-size: 18px;
+      background-color: #C9A84C;
     }
 
-    @media (max-width: 700px) {
-      nav {
-        padding: 16px 18px;
+    @keyframes fadeUpDown {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.7; }
+    }
+
+    /* responsive for mobile */
+    @media (max-width: 600px) {
+      .navbar {
+        padding: 15px 20px;
+      }
+      .hero-text h1 {
+        font-size: 50px;
+      }
+      .category-buttons {
         flex-direction: column;
-        gap: 12px;
+        width: 85%;
       }
-
-      .page {
-        padding-top: 90px;
+      .category-buttons button {
+        border-right: none;
+        border-bottom: 1px solid rgba(201,168,76,0.3);
       }
-
-      .home h1 {
-        font-size: 52px;
-      }
-
-      .section-hero,
-      .tab-bar,
-      .content-block,
-      footer {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .section-title {
-        font-size: 34px;
-      }
-
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-
-      .modal-box img {
-        height: 240px;
-      }
-
-      .modal-title {
-        font-size: 26px;
+      .category-buttons button:last-child {
+        border-bottom: none;
       }
     }
+
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo" onclick="showPage('home')">Film Archive</div>
-    <ul class="nav-list">
-      <li onclick="showPage('colour')">Colour</li>
-      <li onclick="showPage('light')">Light &amp; Shadow</li>
-      <li onclick="showPage('composition')">Composition</li>
+  <!-- navigation -->
+  <nav class="navbar">
+    <a class="logo" href="index.html">Film Archive</a>
+    <ul>
+      <li><a href="colour.html">Colour</a></li>
+      <li><a href="light.html">Light & Shadow</a></li>
+      <li><a href="composition.html">Composition</a></li>
     </ul>
   </nav>
 
-  <div id="home" class="page active">
-    <section class="home">
-      <div class="home-content">
-        <p class="home-small">A Visual Language Study</p>
-        <h1>Film Archive</h1>
-        <p class="home-cn">电影视觉语言研究</p>
-        <p class="home-text">Colour · Light · Composition</p>
+  <!-- homepage hero -->
+  <div class="hero-section">
 
-        <div class="home-buttons">
-          <button onclick="showPage('colour')">01 — Colour</button>
-          <button onclick="showPage('light')">02 — Light &amp; Shadow</button>
-          <button onclick="showPage('composition')">03 — Composition</button>
-        </div>
-      </div>
-    </section>
+    <!-- background with overlay -->
+    <div class="hero-bg"></div>
+
+    <!-- vertical red line -->
+    <div class="red-line"></div>
+
+    <!-- main text -->
+    <div class="hero-text">
+      <p class="small-label">A Visual Language Study</p>
+      <h1>Film Archive</h1>
+      <p class="chinese-title">电影视觉语言研究</p>
+      <p class="categories-label">Colour · Light · Composition</p>
+    </div>
+
+    <!-- buttons to go to each section -->
+    <div class="category-buttons">
+      <button onclick="location.href='colour.html'">01 — Colour</button>
+      <button onclick="location.href='light.html'">02 — Light & Shadow</button>
+      <button onclick="location.href='composition.html'">03 — Composition</button>
+    </div>
+
+    <!-- scroll indicator -->
+    <div class="scroll-hint">
+      <span>Enter</span>
+      <div class="line"></div>
+    </div>
+
   </div>
 
-  <div id="colour" class="page">
-    <div class="section-hero">
-      <p class="section-number">01</p>
-      <h2 class="section-title">Colour as Emotional Code</h2>
-      <p class="section-desc">This section looks at how colour shapes feeling in film. Before characters speak, colour already tells us something about violence, distance, desire, memory, or mood.</p>
-    </div>
-
-    <div class="tab-bar">
-      <button class="active" onclick="showTab('colour', 'red', this)">Red</button>
-      <button onclick="showTab('colour', 'blue', this)">Blue</button>
-      <button onclick="showTab('colour', 'saturation', this)">Artificial Saturation</button>
-    </div>
-
-    <div id="colour-red" class="content-block active">
-      <div class="content-head">
-        <span class="label red">Red</span>
-        <p class="content-note">Violence · Desire · Excess</p>
-      </div>
-
-      <div class="grid">
-        <div class="card" onclick="openModal('The Shining','1980 · Stanley Kubrick','Red','Violence','https://raw.githubusercontent.com/SergioChang415/film-mame/main/shining.jpg','In The Shining, red is used as a warning colour. The elevator blood and the bathroom scenes make the hotel feel dangerous even when nothing is moving. Kubrick turns red into a visual sign of fear and loss of control.')">
-          <div class="card-top-line red"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/shining.jpg" alt="The Shining poster">
-          <div class="card-info">
-            <p class="card-title">The Shining</p>
-            <p class="card-key">Violence</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('Suspiria','1977 · Dario Argento','Red','Excess','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Suspiria.png','Suspiria uses extreme red lighting in a way that feels unnatural. The colour does not try to look realistic. Instead, it builds a dreamlike horror world where every space already feels unstable and threatening.')">
-          <div class="card-top-line red"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/Suspiria.png" alt="Suspiria poster">
-          <div class="card-info">
-            <p class="card-title">Suspiria</p>
-            <p class="card-key">Excess</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('倩女幽魂','1987 · 程小東','Red','Desire','https://raw.githubusercontent.com/SergioChang415/film-mame/main/ghost.jpg','In 倩女幽魂, red often appears around romance and danger at the same time. It supports the feeling that love in this film is beautiful, but also temporary and impossible.')">
-          <div class="card-top-line red"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/ghost.jpg" alt="倩女幽魂 poster">
-          <div class="card-info">
-            <p class="card-title">倩女幽魂</p>
-            <p class="card-key">Desire</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="colour-blue" class="content-block">
-      <div class="content-head">
-        <span class="label blue">Blue</span>
-        <p class="content-note">Isolation · Emotional Distance</p>
-      </div>
-
-      <div class="grid">
-        <div class="card" onclick="openModal('Three Colors: Blue','1993 · Krzysztof Kieślowski','Blue','Isolation','https://raw.githubusercontent.com/SergioChang415/film-mame/main/three color blue.webp','Blue in this film suggests emotional numbness after grief. It appears in spaces and objects around Julie, making the colour feel connected to memory, sadness, and distance from other people.')">
-          <div class="card-top-line blue"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/three color blue.webp" alt="Three Colors Blue poster">
-          <div class="card-info">
-            <p class="card-title">Three Colors: Blue</p>
-            <p class="card-key">Isolation</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('Moonlight','2016 · Barry Jenkins','Blue','Distance','https://raw.githubusercontent.com/SergioChang415/film-mame/main/moonlight.jpg','Moonlight uses blue in a softer and more intimate way. It creates a feeling of quietness and vulnerability, especially in scenes where Chiron seems emotionally separated from the people around him.')">
-          <div class="card-top-line blue"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/moonlight.jpg" alt="Moonlight poster">
-          <div class="card-info">
-            <p class="card-title">Moonlight</p>
-            <p class="card-key">Distance</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('Drive','2011 · Nicolas Winding Refn','Blue','Emotional Distance','https://raw.githubusercontent.com/SergioChang415/film-mame/main/diver.jpeg','In Drive, blue neon helps create a cold urban atmosphere. The colour supports the main character’s emotional restraint and makes the city feel detached, artificial, and hard to connect with.')">
-          <div class="card-top-line blue"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/diver.jpeg" alt="Drive poster">
-          <div class="card-info">
-            <p class="card-title">Drive</p>
-            <p class="card-key">Emotional Distance</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="colour-saturation" class="content-block">
-      <div class="content-head">
-        <span class="label gold">Artificial Saturation</span>
-        <p class="content-note">Designed Emotional Worlds</p>
-      </div>
-
-      <div class="grid">
-        <div class="card" onclick="openModal('The Grand Budapest Hotel','2014 · Wes Anderson','Artificial Saturation','Designed World','https://raw.githubusercontent.com/SergioChang415/film-mame/main/The Grand Budapest Hotel.jpg','This film uses highly controlled colour to create a world that feels designed rather than realistic. The pinks and purples make the hotel feel nostalgic, playful, and slightly unreal.')">
-          <div class="card-top-line gold"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/The Grand Budapest Hotel.jpg" alt="The Grand Budapest Hotel poster">
-          <div class="card-info">
-            <p class="card-title">The Grand Budapest Hotel</p>
-            <p class="card-key">Designed World</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('Amélie','2001 · Jean-Pierre Jeunet','Artificial Saturation','Emotional World','https://raw.githubusercontent.com/SergioChang415/film-mame/main/amelie.png','Amélie uses strong greens, reds, and yellows to shape a playful emotional world. The colours reflect the main character’s imagination and help ordinary places feel more personal and magical.')">
-          <div class="card-top-line gold"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/amelie.png" alt="Amelie poster">
-          <div class="card-info">
-            <p class="card-title">Amélie</p>
-            <p class="card-key">Emotional World</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      <p>Film Archive</p>
-      <p>Visual Language Study</p>
-    </footer>
-  </div>
-
-  <div id="light" class="page">
-    <div class="section-hero">
-      <p class="section-number">02</p>
-      <h2 class="section-title">Light &amp; Shadow</h2>
-      <p class="section-desc">This section focuses on black and white cinematography and how light can shape mood, tension, and psychological space inside a frame.</p>
-    </div>
-
-    <div class="tab-bar">
-      <button class="active" onclick="showTab('light', 'bw', this)">Black &amp; White</button>
-    </div>
-
-    <div id="light-bw" class="content-block active">
-      <div class="content-head">
-        <span class="label mono">Black &amp; White</span>
-        <p class="content-note">Psychological Space</p>
-      </div>
-
-      <div class="grid">
-        <div class="card" onclick="openModal('Metropolis','1927 · Fritz Lang','Black & White','Psychological Space','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Metropolis.png','Metropolis uses strong contrast to divide power and labour visually. The city becomes more than a setting. Through light and shadow, it turns into a system that controls the people living inside it.')">
-          <div class="card-top-line mono"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/Metropolis.png" alt="Metropolis poster">
-          <div class="card-info">
-            <p class="card-title">Metropolis</p>
-            <p class="card-key">Psychological Space</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('Double Indemnity','1944 · Billy Wilder','Black & White','Shadow','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Double Indemnity.png','In Double Indemnity, shadow is closely tied to guilt. The noir lighting creates a sense that the characters are trapped long before the story reaches its ending.')">
-          <div class="card-top-line mono"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/Double Indemnity.png" alt="Double Indemnity poster">
-          <div class="card-info">
-            <p class="card-title">Double Indemnity</p>
-            <p class="card-key">Shadow</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('The Lighthouse','2019 · Robert Eggers','Black & White','Isolation','https://raw.githubusercontent.com/SergioChang415/film-mame/main/The_Lighthouse.jpeg','The Lighthouse uses black and white and a nearly square frame to make the space feel closed and uncomfortable. The limited visual range adds to the film’s pressure and sense of isolation.')">
-          <div class="card-top-line mono"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/The_Lighthouse.jpeg" alt="The Lighthouse poster">
-          <div class="card-info">
-            <p class="card-title">The Lighthouse</p>
-            <p class="card-key">Isolation</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      <p>Film Archive</p>
-      <p>Visual Language Study</p>
-    </footer>
-  </div>
-
-  <div id="composition" class="page">
-    <div class="section-hero">
-      <p class="section-number">03</p>
-      <h2 class="section-title">Composition as Emotional Framing</h2>
-      <p class="section-desc">This section studies how framing, distance, and spatial arrangement help express hierarchy, loneliness, and longing in film scenes.</p>
-    </div>
-
-    <div class="tab-bar">
-      <button class="active" onclick="showTab('composition', 'main', this)">Composition</button>
-    </div>
-
-    <div id="composition-main" class="content-block active">
-      <div class="content-head">
-        <span class="label green">Composition</span>
-        <p class="content-note">Space · Geometry · Longing</p>
-      </div>
-
-      <div class="grid">
-        <div class="card" onclick="openModal('Parasite','2019 · Bong Joon-ho','Composition','Hierarchy','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Parasite.jpg','Parasite uses stairs, levels, and interior layout to show class difference very clearly. The composition keeps reminding the viewer who is above and who is below, both physically and socially.')">
-          <div class="card-top-line green"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/Parasite.jpg" alt="Parasite poster">
-          <div class="card-info">
-            <p class="card-title">Parasite</p>
-            <p class="card-key">Hierarchy</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('Her','2013 · Spike Jonze','Composition','Isolation in Space','https://raw.githubusercontent.com/SergioChang415/film-mame/main/Her.jpg','Her often places Theodore alone inside large areas of empty space. This makes the frame feel quiet and emotional, and it also shows how disconnected he is from the people around him.')">
-          <div class="card-top-line green"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/Her.jpg" alt="Her poster">
-          <div class="card-info">
-            <p class="card-title">Her</p>
-            <p class="card-key">Isolation in Space</p>
-          </div>
-        </div>
-
-        <div class="card" onclick="openModal('花样年华','2000 · 王家衛','Composition','Longing · Restraint','https://raw.githubusercontent.com/SergioChang415/film-mame/main/itmfl.jpg','In 花样年华, the characters are often framed through doorways, mirrors, or narrow hallways. This makes them look close to each other but still separated, which supports the film’s feeling of restraint and longing.')">
-          <div class="card-top-line green"></div>
-          <img src="https://raw.githubusercontent.com/SergioChang415/film-mame/main/itmfl.jpg" alt="In the Mood for Love poster">
-          <div class="card-info">
-            <p class="card-title">花样年华</p>
-            <p class="card-key">Longing · Restraint</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      <p>Film Archive</p>
-      <p>Visual Language Study</p>
-    </footer>
-  </div>
-
-  <div class="modal-bg" id="modalBg" onclick="closeModal(event)">
-    <div class="modal-box">
-      <button class="close-btn" onclick="closeModalDirect()">×</button>
-      <img id="modalImg" src="" alt="Film image">
-      <div class="modal-content">
-        <div class="modal-top" id="modalTop"></div>
-        <h3 class="modal-title" id="modalTitle"></h3>
-        <p class="modal-meta" id="modalMeta"></p>
-        <p class="modal-text" id="modalText"></p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function showPage(pageId) {
-      var pages = document.querySelectorAll('.page');
-      for (var i = 0; i < pages.length; i++) {
-        pages[i].classList.remove('active');
-      }
-
-      document.getElementById(pageId).classList.add('active');
-      window.scrollTo(0, 0);
-    }
-
-    function showTab(section, tab, button) {
-      var allBlocks = document.querySelectorAll('#' + section + ' .content-block');
-      for (var i = 0; i < allBlocks.length; i++) {
-        allBlocks[i].classList.remove('active');
-      }
-
-      var allButtons = button.parentElement.querySelectorAll('button');
-      for (var j = 0; j < allButtons.length; j++) {
-        allButtons[j].classList.remove('active');
-      }
-
-      document.getElementById(section + '-' + tab).classList.add('active');
-      button.classList.add('active');
-    }
-
-    function openModal(title, meta, tag, keyword, img, text) {
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalMeta').textContent = meta;
-      document.getElementById('modalText').textContent = text;
-      document.getElementById('modalImg').src = img;
-      document.getElementById('modalTop').innerHTML = '<span class="label">' + tag + '</span><span class="content-note">' + keyword + '</span>';
-      document.getElementById('modalBg').classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(event) {
-      if (event.target.id === 'modalBg') {
-        closeModalDirect();
-      }
-    }
-
-    function closeModalDirect() {
-      document.getElementById('modalBg').classList.remove('show');
-      document.body.style.overflow = 'auto';
-    }
-
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        closeModalDirect();
-      }
-    });
-  </script>
 </body>
 </html>
